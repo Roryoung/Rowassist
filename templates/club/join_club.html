@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block body_block %}
+	<br/>
+	{% if form.errors %}
+		<div class="row">
+			<div class="col s12 m6 offset-m3">
+				<div class="card">
+					<div class="card-content">
+						<span class="card-title center-align"><strong>Unable to join a club</strong></span>
+						<p>You must select a club</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+
+	<div class="row">
+		<div class="col s12 m6 offset-m3">
+			<div class="card">
+				<div class="card-content">
+					<span class="card-title center-align">Join a Club</span>
+						<form method="post" action="{% url 'joinClub' %}">
+							{% csrf_token %}
+							<div class="container">
+							<select  id="id_requestedClub" name="requestedClub" multiple>
+								<option value="" disabled selected>Choose your Club</option>
+								{% for  club in clubs %}
+									<option value="{{club.id}}">{{ club.name }}</option>
+								{% endfor %}
+							</select>
+							
+							<br/>
+
+							<div class="row center">
+								<button class="col s12 btn waves-effect waves-light light-blue tooltipped" type="submit" data-position="right" data-tooltip="Once requested an admin must aprove you">Request to join</button>
+							</div>
+						</div>
+					</form>
+					<div class="row center-align">
+						{% if user.userprofile.requestedClub%}
+							<div class="col s12 m6">
+								<p>You have requested to join:</p>
+								{% for club in user.userprofile.requestedClub.all %}
+									{{club}}
+								{% endfor %}
+							</div>
+						{% endif %}
+						{% if user.userprofile.club%}
+							<div class="col s12 m6">
+								<p>You are a member of:</p>
+								{% for club in user.userprofile.club.all %}
+									{{club}}
+								{% endfor %}
+							</div>
+						{% endif %}
+					</div>
+				</div>
+
+				<div class="card-action">
+					<a href="{% url 'createClub' %}" class="left">Register a new club</a>
+					<a href="{% url 'index' %}" class="right">Skip</a>
+					<br/>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
