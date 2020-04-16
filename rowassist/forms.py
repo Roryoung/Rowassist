@@ -1,7 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
 from rowassist.models import Athlete, Club, Session, SessionInterval, SessionEntryInterval, SessionEntry
-from registration.forms import RegistrationForm
 import datetime
 
 
