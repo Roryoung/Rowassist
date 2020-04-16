@@ -1,0 +1,124 @@
+{% extends 'rowassist/base.html' %}
+
+{% block title_block %}
+	Approve Members
+{% endblock %}
+
+{% block body_block %}
+	<h3 class="center">Appove members</h3>
+	{% if athletes or coaches %}
+		{% if coaches %}
+			<div class="section">
+				<div class="row">
+					<div class="col s12 l4 offset-l4">
+						<p class="center">You have the folowing coach requests</p>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col s12 l8 offset-l2">
+						<table class="highlight centered responsive-table">
+							<thead>
+								<th>First name</th>
+								<th>Last name</th>
+								<th>Approve</th>
+								<th>Reject</th>
+							</thead>
+
+							<tbody>
+								{% for coach in coaches %}
+									<tr>
+										<td>{{coach.user.first_name}}</td>
+										<td>{{coach.user.last_name}}</td>
+										<td><button class="waves-effect waves-light btn green btn-approve" value="{{coach.user}}"><i class="material-icons">check</i></button></td>
+										<td><button class="waves-effect waves-light btn red btn-reject" value="{{coach.user}}"><i class="material-icons">clear</i></button></td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+
+		{% if athletes %}
+			<div class="section">
+				<div class="row">
+					<div class="col s12 l4 offset-l4">
+						<p class="center">You have the folowing athlete requests</p>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col s12 l8 offset-l2">
+						<table class="highlight centered responsive-table">
+							<thead>
+								<th>First name</th>
+								<th>Last name</th>
+								<th>Approve</th>
+								<th>Reject</th>
+							</thead>
+
+							<tbody>
+								{% for athlete in athletes %}
+									<tr>
+										<td>{{athlete.user.first_name}}</td>
+										<td>{{athlete.user.last_name}}</td>
+										<td><button class="waves-effect waves-light btn green btn-approve" value="{{athlete.user}}"><i class="material-icons">check</i></button></td>
+										<td><button class="waves-effect waves-light btn red btn-reject" value="{{athlete.user}}"><i class="material-icons">clear</i></button</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+	{% else %}
+		<h4 class="center">There are no member requests</h4>
+	{% endif %}
+{% endblock %}
+
+{% block javascript %}
+	<script>
+		$(document).ready(function() {
+			$(".btn-approve").click(function() {
+				var username = $(this).val();
+
+				$.ajax({
+			        url: '/club/approve_member/accept',
+			        type: "POST",
+			        data: {
+			        	'csrfmiddlewaretoken' : "{{  csrf_token  }}",
+			        	'username': username
+			        },
+			        dataType: 'json',
+			        success: function (data) {
+					    Materialize.toast('Approved ' + data.first_name, 4000)
+			        }
+			    });
+				$(this).parent().parent().remove();	        	
+
+			})
+
+			$(".btn-reject").click(function() {
+				var username = $(this).val();
+
+				$.ajax({
+			        url: '/club/approve_member/reject',
+			        type: "POST",
+			        data: {
+			        	'csrfmiddlewaretoken' : "{{  csrf_token  }}",
+			        	'username': username
+			        },
+			        dataType: 'json',
+			        success: function (data) {
+					    Materialize.toast('Rejected ' + data.first_name, 4000)
+			        }
+			    });
+				$(this).parent().parent().remove();
+
+			})
+		});
+	</script>
+{% endblock %}

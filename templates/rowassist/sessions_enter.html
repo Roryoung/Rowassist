@@ -1,0 +1,110 @@
+{% extends 'rowassist/base.html' %}
+
+{% block title_block %}
+    Add Session
+{% endblock %}
+
+{% block body_block %}
+    <h3 class="center">Add Session Entry</h3>
+    {% if error_message %}
+        {{ error_message }}
+    {% endif %}
+
+    <form id="add_session_entry_form" method="post" action="{% url 'sessions_enter' %}?id={{ session.id }}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col s12 l4 offset-l4">
+                <h5 class="center">Session: {{ session.name }}, {{ session.date }}</h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12 l4 offset-l4">
+                <h5 class="center">Athlete: {{ user.first_name }} {{ user.last_name }}</h5>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col s12 l4 offset-l4">
+                <div class="divider">
+                </div>
+            </div>
+        </div>
+        {{intervalFormSet.management_form }}
+        {% for interval in intervalFormSet %}
+        
+        
+       <div class="row">
+            <div class="input-field col s12 l2 offset-l4 {% if distance_fixed %} hide {% endif %}">
+                <input id="{{interval.distance.id_for_label}}" type="number" name="{{interval.distance.id_for_label|slice:'3:'}}" class="validate distance_input">
+                <label for="{{interval.distance.id_for_label}}">Distance</label>
+            </div>
+
+            <div class="input-field col s12 l2 offset-l4 {% if not distance_fixed %} hide {% endif %}">
+                <input id="{{interval.time.id_for_label}}" type="text" name="{{interval.time.id_for_label|slice:'3:'}}" class="validate time_input">
+                <label for="{{interval.time.id_for_label}}">Time</label>
+            </div>
+
+            <div class="input-field col s12 l2">
+                <input id="{{interval.strokes_per_minute.id_for_label}}" type="number" name="{{interval.strokes_per_minute.id_for_label|slice:'3:'}}" class="validate">
+                <label for="{{interval.strokes_per_minute.id_for_label}}">Rate</label>
+            </div>
+        </div>
+        {% endfor %}
+
+        <div class="row">
+            <div class="center">
+                <input type="text" id="id_type" class="hide" name="type">
+                <button class="btn waves-effect waves-light orange" type="submit" name="submit">Add entry</button>
+            </div>
+        </div>
+    </form>
+
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(document).ready(function () {
+            var IC = 0;
+            $("#id_type").val("S");
+            $(".variableForm").addClass('hide');
+
+
+            $('#single').click(function () {
+                $("#fixedInterval").addClass('hide');
+                $(".variableForm").addClass('hide');
+                $("#id_type").val("S");
+            });
+
+            $('#fixed').click(function () {
+                $("#fixedInterval").removeClass('hide');
+                $(".variableForm").addClass('hide');
+                $("#id_type").val("F");
+            });
+
+            $('#variable').click(function () {
+                $("#fixedInterval").addClass('hide');
+                $(".variableForm").removeClass('hide');
+                $("#id_type").val("V");
+            })
+        });
+
+        $('.link-formset').formset({
+            addText: '<i class="Tiny material-icons">add</i>',
+            deleteText: '<i class="Tiny material-icons">remove</i>'
+        });
+
+        $(document).on('click', '.distanceOrTimeRadio', function () {
+            if ($(this).val() == 1) {
+
+                $(this).parent().parent().parent().find('.div_time').removeClass("hide");
+                $(this).parent().parent().parent().find('.div_distance').addClass("hide");
+                $(this).parent().parent().parent().find('.distance_input').val("");
+            } else {
+                $(this).parent().parent().parent().find('.div_time').addClass("hide");
+                $(this).parent().parent().parent().find('.div_distance').removeClass("hide");
+                $(this).parent().parent().parent().find('.time_input').val("");
+            }
+        })
+    </script>
+{% endblock %}

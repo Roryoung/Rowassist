@@ -1,0 +1,56 @@
+{% extends 'rowassist/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+	Sign In
+{% endblock %}
+
+{% block body_block %}
+    <div class="row">
+      <h3 class="center">Sign in</h3>
+    </div>
+
+    {% if error_message %}
+    	<div class="center">
+    		<h5>{{error_message}}</h5>
+    	</div>
+    {% endif %}
+
+	<form id="login_form" method="post" action="{% url 'sign_in' %}">
+    	{% csrf_token %}
+
+		<div class="row">
+			<div class="input-field col s12 l4 offset-l4">
+				<input id="username" type="text" name="username" class="validate">
+				<label for="username">Username</label> 
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="input-field col s12 l4 offset-l4">
+				<input id="password" type="password" name="password" class="validate">
+				<label for="password">Password</label>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="center">
+				<button class="btn waves-effect waves-light orange" type="submit">Sign in</button>
+			</div>
+		</div>
+	</form>
+
+	<div class="row">
+		<div class="col s12 l4 offset-l4">
+			<div class="divider">
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+	  <div class="center">
+	    <h4>Don't have an account?</h4>
+	    <h6>Sign up <a class="waves-effect waves-light btn orange" href="{% url 'sign_up' %}">Here</a></h6>
+	  </div>
+	</div>
+{% endblock %}

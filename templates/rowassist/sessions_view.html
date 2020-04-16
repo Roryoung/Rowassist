@@ -1,0 +1,39 @@
+{% extends 'rowassist/base.html' %}
+
+{% block title_block %}
+    View Session
+{% endblock %}
+
+{% block body_block %}
+    <div class="container">
+        <h4 class="col s12 center">Session: {{ target_session.name }}
+            ({{ target_session.date }})</h4>
+        {% if user.athlete.is_coach %}<a href="{% url 'sessions_close' %}?id={{ target_session.id }}">Close Session</a> {% endif %}
+        <a href="{% url 'sessions_enter' %}?id={{ target_session.id }}">Add entry</a> 
+        {% if session_entries %}
+            <table class="striped">
+                <thead>
+                <tr class="center">
+                    <td>Athlete</td>
+                    <td>View Intervals</td>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for session_entry in session_entries %}
+                    <tr class="center">
+                        <td>{{session_entry.athlete.user.first_name}} {{session_entry.athlete.user.last_name}}</td>
+                        <td><a href="{% url 'sessions_view_interval' %}?seid={{ session_entry.id }}">View</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <br>
+            <div class="row">
+                <h5 class="center">No entries have been made yet</h5>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

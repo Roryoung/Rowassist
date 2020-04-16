@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+	<head lang='en'>
+		<meta chaerset='UTF-8' />
+		   <!--Import Google Icon Font-->
+    		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+		    <!--Import materialize.css-->
+		    <link type="text/css" rel="stylesheet"  href="{% static 'css/materialize.css' %}"media="screen,projection"/>
+
+		    <!--Let browser know website is optimized for mobile-->
+		    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+		    <link rel="icon" href="{% static 'images/Logo.svg' %}">
+		<title>
+			{% block title_block %}
+				Row Assist
+			{% endblock %}
+		</title>
+	</head>
+	<body>
+		<ul id="AccountDropdown" class="dropdown-content">
+			{% if user.is_authenticated %}
+				<li><a href="{% url 'account' %}">My Account</a></li>
+				<li><a href="{% url 'sign_out' %}">Sign out</a></li>
+			{% else %}
+				<li><a href="{% url 'sign_in' %}">Sign in</a></li>
+				<li><a href="{% url 'sign_up' %}">Sign Up</a></li>
+			{% endif %}
+		</ul>
+
+		<ul id="ClubDropdown" class="dropdown-content">
+			{% if user.is_authenticated %}
+				{%if user.athlete.is_coach %}
+					{% if user.athlete.club %}
+						<li><a href="{% url 'approve_member' %}">Member Requests</a></li>
+						<li><a href="{% url 'sessions_create' %}">Create Session</a></li>
+					{% else %}
+						<li><a href="{% url 'create_club' %}">Create Club</a></li>
+					{% endif %}
+				{% endif %}
+
+				{% if user.athlete.requested_club %}
+					<li><a href="{% url 'join_club_cancel' %}">Cancel request</a></li>
+				{% elif not user.athlete.club %}
+					<li><a href="{% url 'join_club' %}">Join Club</a></li>
+				{% endif %}
+				{% if user.athlete.club %}
+					<li><a href="{% url 'sessions' %}">Club Sessions</a></li>
+					<li><a href="{% url 'leave_club' %}">Leave Club</a></li>
+				{% endif %}
+			{% endif %}
+		</ul>
+
+		<nav>
+	     	<div class="row">
+	        	<div class="nav-wrapper col s12">
+					<img src="{% static 'images/Logo.svg' %}" alt="Row Assist" class="brand-logo center">
+					<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+
+					<ul class="right hide-on-med-and-down">
+			            {% if user.is_authenticated %}
+			            	<li><a class="dropdown-button" href="{% url 'club' %}" data-activates="ClubDropdown">Club<i class="material-icons right">arrow_drop_down</i></a></li>
+			            {% endif %}			           
+			           	<li><a class="dropdown-button" href="#!" data-activates="AccountDropdown">Account<i class="material-icons right">arrow_drop_down</i></a></li>
+	        		</ul>
+
+	        		<ul class="side-nav" id="mobile-demo">
+			            {% if user.is_authenticated %}
+			            	{%if user.athlete.is_coach %}
+								{% if user.athlete.club %}
+									<li><a href="{% url 'approve_member' %}">Member Requests</a></li>
+									<li><a href="{% url 'sessions_create' %}">Create Session</a></li>
+
+								{% else %}
+									<li><a href="{% url 'create_club' %}">Create Club</a></li>
+								{% endif %}
+							{% endif %}
+
+							{% if user.athlete.requested_club %}
+								<li><a href="{% url 'join_club_cancel' %}">Cancel request</a></li>
+							{% elif not user.athlete.club %}
+								<li><a href="{% url 'join_club' %}">Join Club</a></li>
+							{% endif %}
+
+							{% if user.athlete.club %}
+								<li><a href="{% url 'sessions' %}">Club Sessions</a></li>
+								<li><a href="{% url 'leave_club' %}">Leave Club</a></li>
+							{% endif %}
+			            	<li class="divider"></li>
+			            	<li><a href="{% url 'account' %}">My Account</a></li>
+			            	<li><a href="{% url 'sign_out' %}">Sign out</a></li>
+				        {% else %}
+			            	<li><a href="{% url 'sign_in' %}">Sign in</a></li>
+				            <li><a href="{% url 'sign_up' %}">Sign Up</a></li>
+			            {% endif %}	
+	          		</ul>
+	        	</div>
+	     	</div>
+	    </nav>
+
+		{% block body_block %}
+			the base page!
+		{% endblock %}
+
+		<!--Import jQuery before materialize.js-->
+	    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
+	    <script type="text/javascript" src="{% static 'js/materialize.js' %}"></script>
+	    <script type="text/javascript" src="{% static 'js/rowassist.js' %}"></script>
+	    <script src="{% static 'js/formset.js' %}"></script>
+	    {% block javascript %}{% endblock %}
+	</body>
+</html>

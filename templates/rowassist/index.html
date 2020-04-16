@@ -1,0 +1,12 @@
+{% extends 'rowassist/base.html' %}
+
+{% block title_block %}
+	Row Assist
+{% endblock %}
+
+{% block body_block %}
+	{{user.first_name}} {{user.last_name}}
+	{% for session in user_sessions %}
+		{{session.session}}
+	{% endfor %}
+{% endblock %}

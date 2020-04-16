@@ -1,0 +1,47 @@
+{% extends 'rowassist/base.html' %}
+
+{% block title_block %}
+	Create Club
+{% endblock %}
+
+{% block body_block %}
+	<h3 class="center">Create Club</h3>
+	{% if error_message %}
+		<div class="center">
+			{% for key, error in error_message.items %}
+				<h5>{{ error }}</h5>
+			{% endfor %}
+		</div>
+	{% endif %}
+
+	<form id="create_club_form" method="post" action="{% url 'create_club' %}" enctype="multipart/form-data">
+		{% csrf_token %}
+
+		<div class="row">
+			<div class="input-field col s12 l4 offset-l4">
+			  	<input id="id_name" type="text" name="name" class="validate" maxlength="128" required>
+			  	<label for="id_name">Club Name</label> 
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="input-field col s12 l4 offset-l4">
+			  	<input id="id_short_name" type="text" name="short_name" class="validate">
+			  	<label for="id_short_name">Short Name</label> 
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="input-field col s12 l4 offset-l4">
+			  	<input id="id_url" type="url" name="url" class="validate">
+			  	<label for="id_url">Website</label> 
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="center">
+				<button class="btn waves-effect waves-light orange" type="submit" name="submit">Create Club</button>
+			</div>
+		</div>
+	</form>
+{% endblock %}

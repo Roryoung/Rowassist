@@ -1,0 +1,36 @@
+{% extends 'rowassist/base.html' %}
+
+{% block title_block %}
+	Club
+{% endblock %}
+
+{% block body_block %}
+{% if club %}
+	<h3 class="center hide-on-small-only">{{club.name}}</h3>
+	<h3 class="center hide-on-med-and-up">{{club.short_name}}</h3>
+	<div class="center">
+
+	<h4>Coaches</h4>
+	{% for coach in coaches %}
+		{{coach.fullname}}<br>
+	{% endfor %}
+
+	<h4>Athletes</h4>
+	{% for athlete in athletes %}
+		{{athlete.fullname}}<br>
+	{% endfor %}
+	</div>
+{% else %}
+	<h4 class="center">You have no curent club</h4>
+{% endif %}
+
+    <div class="section">
+      	<div class="row center">
+      		<a class="waves-effect waves-light btn orange" href="{% url 'sessions' %}">View Sessions</a>
+   			<a class="waves-effect waves-light btn orange" href="{% url 'sessions_create' %}">Create Session</a>
+   			<a class="waves-effect waves-light btn orange" href="{% url 'approve_member' %}">Member request</a>
+      	</div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'rowassist/base.html' %}
+
+{% block title_block %}
+    View Session
+{% endblock %}
+
+{% block body_block %}
+
+    <div class="container">
+        <h4 class="col s12 center">Athlete: {{ intervals.0.session_entry.athlete.user.first_name }}</h4>
+        <table class="striped">
+            <thead>
+            <tr class="center">
+                <td>Time</td>
+                <td>Distance</td>
+                <td>Rate</td>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for interval in intervals %}
+                <tr class="center">
+                    <td>{{ interval.time }}</td>
+                    <td>{{ interval.distance }}</td>
+                    <td>{{ interval.strokes_per_minute }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

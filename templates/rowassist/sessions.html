@@ -1,0 +1,57 @@
+{% extends 'rowassist/base.html' %}
+
+{% block title_block %}
+	Sessions
+{% endblock %}
+
+{% block body_block %}
+	<div class="container section">
+        <h4 class="col s12 center">Active Sessions</h4>
+        <table class="striped">
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Date</td>
+                    <td>Type</td>
+                    <td>View Session</td>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for session in active_sessions %}
+                <tr>
+                    <!--we want some kind of link here to get detailed information on a session-->
+                    <td>{{ session.name }}</td>
+                    <td>{{ session.date }}</td>
+                    <td>{{ session.type }}</td>
+                    <td><a href="{% url 'sessions_view' %}?id={{ session.id }}">View</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <h4 class="col s12 center">Previous Sessions</h4>
+        <table class="striped">
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>Date</td>
+                    <td>Type</td>
+                    <td>View Session</td>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for session in previous_sessions %}
+                <tr>
+                    <!--we want some kind of link here to get detailed information on a session-->
+                    <td>{{ session.name }}</td>
+                    <td>{{ session.date }}</td>
+                    <td>{{ session.type }}</td>
+                    <td><a href="{% url 'sessions_view' %}?id={{ session.id }}">View</a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

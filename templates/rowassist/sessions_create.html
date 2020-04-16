@@ -1,0 +1,198 @@
+{% extends 'rowassist/base.html' %}
+
+{% block title_block %}
+	Add Session
+{% endblock %}
+
+{% block body_block %}
+	<h3 class="center">Create Session</h3>
+	{% if error_message %}
+		{{error_message}}
+	{% endif %}
+
+	<form id="create_session_form" method="post" action="{% url 'sessions_create' %}" enctype="multipart/form-data">
+		{% csrf_token %}
+		<div class="row">
+    		<div class="input-field col s12 l4 offset-l4">
+    			<input id="id_name" type="text"  name="name" class="validate" required>
+			  	<label for="id_name">Session Name</label>
+    		</div>
+    	</div>
+
+    	<div class="row">
+    		<div class="input-field col s12 l4 offset-l4">
+			  	<input id="id_date" type="text"  name="date" class="datepicker" required>
+			  	<label for="id_date">Date</label>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col s12">
+			<ul id="tabs-swipe-demo" class="tabs center">
+				<li class="tab col s4 l3 offset-l2"><a id="single">Single Interval</a></li>
+				<li class="tab col s4 l2"><a id="fixed">Fixed Interval</a></li>
+				<li class="tab col s4 l3"><a id="variable">Variable Interval</a></li>
+			</ul>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col s12 l4 offset-l4">
+				<div class="divider">
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+    		<div class="col s4 l2 offset-l2 center">
+    			<p>
+				    <input name="distanceOrTime" type="radio" id="distanceRadio" class="distanceOrTimeRadio" value="0" checked />
+				    <label for="distanceRadio">By Distance</label>
+				</p>
+
+				<p>
+				    <input name="distanceOrTime" type="radio" id="timeRadio"  class="distanceOrTimeRadio" value="1"/>
+				    <label for="timeRadio">By Time</label>
+				</p>
+			</div>
+
+			<div class="input-field col s4 l2 div_distance">
+			  	<input id="id_distance" type="number" name="distance" class="validate distance_input">
+			  	<label for="id_distance">Distance</label> 
+			</div>
+
+			<div class="input-field col s4 l2 hide div_time">
+			  	<input id="id_time" type="text" name="time" class="validate time_input">
+			  	<label for="id_time">Time</label>
+			</div>
+
+			<div class="input-field col s4 l2">
+			  	<input id="id_rate" type="number"  name="rate" class="validate">
+			  	<label for="id_rate">Rate</label>
+			</div>
+
+
+    	</div> 
+
+    	<div class="row hide" id="fixedInterval">
+			<div class="input-field col s12 l2 offset-l4">
+			  	<input id="id_intervalNo" type="number"  name="intervalNo" class="validate">
+			  	<label for="id_intervalNo">Number of intervals</label>
+			</div>
+
+			<div class="input-field col s12 l2">
+			  	<input id="id_rest" type="text"  name="rest" class="validate">
+			  	<label for="id_rest">Rest time</label>
+			</div>
+		</div>
+
+	    <div class="row">
+			<div class="col s12 l8 offset-l2">
+				<div class="divider">
+				</div>
+			</div>
+		</div>
+
+		<div class="variableForm">
+			{{intervalFormSet.management_form }}
+			{% for interval in intervalFormSet %}
+				<div class="link-formset row">
+
+					<div class="col s4 l2 offset-l2 center">
+						<p>
+					    	<input name="distanceOrTime{{interval.distance.id_for_label}}" type="radio" id="distanceRadio{{interval.distance.id_for_label}}" class="distanceOrTimeRadio" value="0" checked/>
+					    	<label for="distanceRadio{{interval.distance.id_for_label}}">By Distance</label>
+					    </p>
+					    <p>
+							<input name="distanceOrTime{{interval.distance.id_for_label}}" type="radio" id="timeRadio{{interval.distance.id_for_label}}" class="distanceOrTimeRadio" value="1"/>
+							<label for="timeRadio{{interval.distance.id_for_label}}">By Time</label>
+					    </p>
+					</div>
+
+					<div class="input-field col s2 l2 div_distance">
+						<input type="number" name="{{interval.distance.id_for_label|slice:'3:'}}" id="{{interval.distance.id_for_label}}">
+						<label for="{{interval.distance.id_for_label}}">Distance</label>
+					</div>
+
+					<div class="input-field col s2 l2 hide div_time">
+						<input type="text" name="{{interval.time.id_for_label|slice:'3:'}}" id="{{interval.time.id_for_label}}">
+						<label for="{{interval.time.id_for_label}}">Time</label>
+					</div>
+
+					<div class="input-field col s2 l2">
+						<input type="number" name="{{interval.rate.id_for_label|slice:'3:'}}" id="{{interval.rate.id_for_label}}">
+						<label for="{{interval.rate.id_for_label}}">Rate</label>
+					</div>
+
+					<div class="input-field col s2 l2">
+						<input type="text" name="{{interval.rest.id_for_label|slice:'3:'}}" id="{{interval.rest.id_for_label}}">
+						<label for="{{interval.rest.id_for_label}}">Rest</label>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+
+
+		<div class="row" id="div_id_description">
+    		<div class="input-field col s12 l8 offset-l2">
+    			<textarea id="id_description" class="materialize-textarea" name="description"></textarea>
+    			<label for="id_description">Session Description (Comments)</label>
+    		</div>
+    	</div>
+
+		<div class="row">
+			<div class="center">
+				<input type="text" id="id_type" class="hide" name="type">
+				<button class="btn waves-effect waves-light orange" type="submit" name="submit">Create Session</button>
+			</div>
+		</div>
+	</form>
+
+{% endblock %}
+
+{% block javascript%}
+	<script>
+		$(document).ready(function() {
+			var IC = 0;
+			$("#id_type").val("S");
+			$(".variableForm").addClass('hide');
+
+
+			$('#single').click(function() {
+				$("#fixedInterval").addClass('hide');
+				$(".variableForm").addClass('hide');
+				$("#id_type").val("S");
+			})
+
+			$('#fixed').click(function() {
+				$("#fixedInterval").removeClass('hide');
+				$(".variableForm").addClass('hide');
+				$("#id_type").val("F");
+			})
+
+			$('#variable').click(function() {
+				$("#fixedInterval").addClass('hide');
+				$(".variableForm").removeClass('hide');
+				$("#id_type").val("V");
+			})
+  		})
+
+  		$('.link-formset').formset({
+	        addText: '<i class="Tiny material-icons">add</i>',
+	        deleteText: '<i class="Tiny material-icons">remove</i>'
+	    });
+
+	    $(document).on('click', '.distanceOrTimeRadio', function() { 
+			if ($(this).val() == 1){
+				
+				$(this).parent().parent().parent().find('.div_time').removeClass("hide");
+				$(this).parent().parent().parent().find('.div_distance').addClass("hide");
+				$(this).parent().parent().parent().find('.distance_input').val("");
+			} else {
+				$(this).parent().parent().parent().find('.div_time').addClass("hide");
+				$(this).parent().parent().parent().find('.div_distance').removeClass("hide");
+				$(this).parent().parent().parent().find('.time_input').val("");
+			}
+		})
+	</script>
+{% endblock %}

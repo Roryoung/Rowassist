@@ -1,0 +1,26 @@
+{% extends 'rowassist/base.html' %}
+
+{% block title_block %}
+	Leave club
+{% endblock %}
+
+{% block body_block %}
+	<h3 class="center">Leave Club</h3>
+
+	<div class="row center">
+		<div class="col s12 l4 offset-l4">
+			<p>Are you sure you would like to leave <b> {{user.athlete.club}}</b>?</p>
+			<p>If you leave {{user.athlete.club.short_name}} you will no longer be able to view the clubs sessions and record entires.</p>
+		</div>
+	</div>
+
+	<div class="row center ">
+		<div class="col s12 l2 offset-l4">
+			<a class="waves-effect waves-light btn green" href="{% url 'leave_club_confirm' %}">Yes</a>
+		</div>
+
+		<div class="col s12 l2">
+			<a class="waves-effect waves-light btn red" href="{% url 'account' %}">No</a>
+		</div>
+	</div>
+{% endblock %}

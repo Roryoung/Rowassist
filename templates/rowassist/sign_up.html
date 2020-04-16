@@ -1,0 +1,84 @@
+{% extends 'rowassist/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+Register
+{% endblock %}
+
+{% block body_block %}
+	<h3 class="center">Sign Up</h3>
+
+	{% if error_message %}
+		<div class="center">
+			{% for key, error in error_message.items %}
+				<h5>{{ error }}</h5>
+			{% endfor %}
+		</div>
+	{% endif %}
+
+
+	<form id="user_form" method="post" action="{% url 'sign_up' %}" enctype="multipart/form-data">
+
+		{% csrf_token %}
+
+    	<div class="row">
+    		<div class="input-field col s12 l2 offset-l4">
+    			<input id="id_first_name" type="text" name="first_name" class="validate" required>
+    			<label for="id_first_name">First Name</label>
+    		</div>
+
+    		<div class="input-field col s12 l2">
+    			<input id="id_last_name" type="text" name="last_name" class="validate" required>
+    			<label for="id_last_name">Last Name</label>
+    		</div>
+    	</div>
+
+		<div class="row">
+			<div class="input-field col s12 l4 offset-l4">
+			  	<input id="id_username" type="text" name="username"class="validate" required>
+			  	<label for="id_username">Username</label> 
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="input-field col s12 l4 offset-l4">
+			  	<input id="id_email" type="email" name="email"class="validate" required>
+			  	<label for="id_email">Email</label> 
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="input-field col s12 l4 offset-l4">
+			  	<input id="id_password" type="password"  name="password" class="validate" required>
+			  	<label for="id_password">Password</label>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="file-field input-field col s12 l4 offset-l4">
+				<div class="btn orange">
+					<span>Add a Profile Picture</span>
+					<input type="file" name="picture" id="id_picture">
+				</div>
+					<div class="file-path-wrapper">
+					<input class="file-path validate" type="text">
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col s12 l4 offset-l4 center">
+				<input type="checkbox" id="id_is_coach" name="is_coach"/>
+  				<label for="id_is_coach">Are you a coach?</label>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="center">
+				<button class="btn waves-effect waves-light orange" type="submit" name="submit">Create Account</button>
+			</div>
+		</div>
+		
+
+	</form>
+{% endblock %}
